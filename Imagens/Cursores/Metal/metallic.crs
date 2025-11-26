@@ -1,0 +1,21 @@
+﻿[Arrow]
+Path=Metal.cur
+
+[Hand]
+Path=Metal Link.cur
+
+[AppStarting]
+Path=Metal Working.ani
+
+[SizeWE]
+Path=Metal HR.cur
+
+[SizeNS]
+Path=Metal VR.cur
+
+[SizeNWSE]
+Path=Metal NWSE.cur
+
+[SizeNESW]
+Path=Metal NESW.cur
+

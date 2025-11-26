@@ -1,0 +1,51 @@
+﻿[Arrow]
+Path=Mitsuri.ani
+
+[Hand]
+Path=Mitsuri Link.ani
+
+[Wait]
+Path=Petals Busy.ani
+
+[NWPen]
+Path=Petals Handwriting.ani
+
+[Pin]
+Path=Mitsuri Location.ani
+
+[Help]
+Path=Mitsuri Help.ani
+
+[UpArrow]
+Path=Mitsuri Alternate.ani
+
+[SizeNESW]
+Path=Cherry Blossom Diagonal 2.ani
+
+[SizeNWSE]
+Path=Cherry Blossom Diagonal 1.ani
+
+[SizeWE]
+Path=Cherry Blossom Horizontal.ani
+
+[SizeAll]
+Path=Cherry Blossom Move.ani
+
+[Person]
+Path=Mitsuri Person.ani
+
+[Crosshair]
+Path=Mitsuri Precision.ani
+
+[IBeam]
+Path=Mitsuri Text.ani
+
+[No]
+Path=Mitsuri Unavailable.ani
+
+[SizeNS]
+Path=Cherry Blossom Vertical.ani
+
+[AppStarting]
+Path=Mitsuri Working.ani
+

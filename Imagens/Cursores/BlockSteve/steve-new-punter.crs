@@ -1,0 +1,45 @@
+﻿[Arrow]
+Path=Steve Normal.cur
+
+[Help]
+Path=Pig Help.cur
+
+[AppStarting]
+Path=Steve Working.ani
+
+[Wait]
+Path=Block Busy.ani
+
+[Crosshair]
+Path=Creeper Precision.cur
+
+[IBeam]
+Path=Enderman Text.ani
+
+[SizeNESW]
+Path=Bow Diagonal 2.ani
+
+[SizeAll]
+Path=Skeleton Move.ani
+
+[UpArrow]
+Path=Herobrine Alternate.ani
+
+[NWPen]
+Path=Bow Handwriting.cur
+
+[No]
+Path=Herobrine Unavaible.cur
+
+[Hand]
+Path=Steve Link.ani
+
+[SizeNS]
+Path=Chest Vertical.ani
+
+[SizeWE]
+Path=Ender-Dragon Horizontal.ani
+
+[SizeNWSE]
+Path=Bow Diagonal 1.ani
+

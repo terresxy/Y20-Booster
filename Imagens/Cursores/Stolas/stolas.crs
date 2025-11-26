@@ -1,0 +1,51 @@
+﻿[Arrow]
+Path=Stolas.ani
+
+[Hand]
+Path=Stolas Link.ani
+
+[Wait]
+Path=Stolas Busy.ani
+
+[UpArrow]
+Path=Stolas Alternate.ani
+
+[NWPen]
+Path=Stolas Handwriting.ani
+
+[IBeam]
+Path=Stolas Text.ani
+
+[Crosshair]
+Path=Stolas Precision.ani
+
+[Pin]
+Path=Stolas Location.ani
+
+[AppStarting]
+Path=Stolas Working.ani
+
+[SizeAll]
+Path=Stolas Move.ani
+
+[SizeWE]
+Path=Stolas Horizontal.ani
+
+[SizeNS]
+Path=Stolas Vertical.ani
+
+[SizeNESW]
+Path=Stolas Diagonal 2.ani
+
+[SizeNWSE]
+Path=Stolas Diagonal 1.ani
+
+[No]
+Path=Stolas Unavailable.ani
+
+[Help]
+Path=Stolas Help.ani
+
+[Person]
+Path=Stolas Person.ani
+

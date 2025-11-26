@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=1366, height=768, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https: http://localhost:3001 http://127.0.0.1:3001 ws://localhost:3001 ws://127.0.0.1:3001; frame-src 'none';" />
+    <title>Y20 BOOSTER</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  </head>
+  <body data-theme="premium" data-neon="off">
+    <!-- Tela de Boas-Vindas -->
+    <div class="welcome-overlay" id="welcome-overlay" hidden>
+      <div class="welcome-window-controls">
+        <button class="window-btn" id="welcome-minimize-window" title="Minimizar">
+          <span></span>
+        </button>
+        <button class="window-btn close" id="welcome-close-window" title="Fechar">
+          <span></span>
+        </button>
+      </div>
+      <div class="welcome-content">
+        <div class="welcome-animation">
+          <div class="welcome-logo">
+            <img src="../../assets/icons/logo-app.png" alt="Y20 Booster" />
+          </div>
+          <h1 class="welcome-title">Bem-Vindo!</h1>
+        </div>
+        <!-- Status de Verificação no canto direito -->
+        <div id="welcome-server-check" class="welcome-server-check">
+          <div class="welcome-server-check-icon">🔄</div>
+          <div class="welcome-server-check-text">
+            <strong>Verificando...</strong>
+            <p id="welcome-server-check-message">Validando acesso e conectividade</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tela de Login -->
+    <div class="login-overlay" id="login-overlay" hidden style="display: none;">
+      <div class="login-panel">
+        <div class="login-window-controls">
+          <button class="window-btn" id="login-devtools-window" title="Abrir DevTools (F12)" style="background: rgba(112, 88, 255, 0.2);">
+            <span style="font-size: 14px;">🔧</span>
+          </button>
+          <button class="window-btn" id="login-minimize-window" title="Minimizar">
+            <span></span>
+          </button>
+          <button class="window-btn close" id="login-close-window" title="Fechar">
+            <span></span>
+          </button>
+        </div>
+        <div class="login-header">
+          <div class="login-logo">
+            <img src="../../assets/icons/logo-app.png" alt="Y20 Booster" />
+          </div>
+          <h1>Y20 BOOSTER</h1>
+          <p class="login-subtitle">Digite sua chave de acesso</p>
+        </div>
+        <div class="login-form">
+          <div class="login-input-group">
+            <label for="key-input">Chave de Acesso</label>
+            <input 
+              type="text" 
+              id="key-input" 
+              placeholder="Digite sua key aqui..."
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <p class="login-hint">Obtenha sua key no servidor Discord</p>
+          </div>
+          <div class="login-status" id="login-status" hidden>
+            <p id="login-status-message"></p>
+          </div>
+          <button class="login-button" id="login-button">
+            <span>Entrar</span>
+          </button>
+          <div class="login-footer">
+            <p>Não tem uma key? <a href="https://discord.gg/Gc76J6f2xH" target="_blank">Entre no Discord</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="app-shell" id="app-shell" hidden>
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-icon">⚡</span>
+          <span class="brand-name">Y20 BOOSTER</span>
+        </div>
+        <nav class="nav-list">
+          <button class="nav-item active" data-section="general">
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>
+            </span>
+            <span class="nav-label" data-i18n="general">Geral</span>
+          </button>
+          <button class="nav-item" data-section="optimization">
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2a1 1 0 0 1 .94.66l1.2 3.42a6 6 0 0 1 3.78 3.78l3.42 1.2a1 1 0 0 1 0 1.88l-3.42 1.2a6 6 0 0 1-3.78 3.78l-1.2 3.42a1 1 0 0 1-1.88 0l-1.2-3.42a6 6 0 0 1-3.78-3.78l-3.42-1.2a1 1 0 0 1 0-1.88l3.42-1.2a6 6 0 0 1 3.78-3.78l1.2-3.42A1 1 0 0 1 12 2z"/></svg>
+            </span>
+            <span class="nav-label" data-i18n="optimization">Otimização</span>
+          </button>
+          <button class="nav-item" data-section="forced-optimization">
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            </span>
+            <span class="nav-label">Otimização Forçada</span>
+          </button>
+          <button class="nav-item" data-section="config">
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24"><path d="M8 3a1 1 0 0 1 .89.54L10.38 6H19a1 1 0 0 1 .96 1.27l-1.8 6.3A3 3 0 0 1 15.24 16H9.62l-.89 1.78A1 1 0 0 1 7.8 18H5a1 1 0 0 1-1-1v-3H3a1 1 0 1 1 0-2h1V6a3 3 0 0 1 3-3h1z"/></svg>
+            </span>
+            <span class="nav-label" data-i18n="configEmu">Config/Emu</span>
+          </button>
+          <button class="nav-item" data-section="backup">
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-9 5.54 1 1 0 0 0 1.76.9A8 8 0 1 1 4 12H2l3-4 3 4H6a6 6 0 1 0 6-6 1 1 0 0 1-1-1V3a1 1 0 1 1 2 0v1.08A8 8 0 1 1 20 12a1 1 0 0 0 2 0A10 10 0 0 0 12 2z"/></svg>
+            </span>
+            <span class="nav-label" data-i18n="backup">Backup</span>
+          </button>
+          <button class="nav-item" data-section="admin" id="admin-nav-item" style="display: none;">
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+            </span>
+            <span class="nav-label">Admin</span>
+          </button>
+        </nav>
+        <div class="sidebar-footer">
+          <div class="optimization-chip">
+            <span data-i18n="optimizationLevel">Otimização</span>
+            <strong id="sidebar-score">0%</strong>
+          </div>
+        </div>
+      </aside>
+
+      <main class="content-area">
+        <header class="topbar" data-drag-region>
+          <div class="top-left">
+            <div class="logo-wrapper">
+              <img src="../../assets/icons/logo-app.png" alt="Y20 Booster" class="app-logo" />
+              <div class="title-stack">
+                <h1 class="page-title">Y20 BOOSTER</h1>
+                <span class="version-tag">v1.0.60</span>
+              </div>
+            </div>
+          </div>
+          <div class="top-actions">
+            <div class="dropdown language-selector">
+              <button id="language-button">
+                <img src="../../assets/flags/flag-br.png" alt="Português (Brasil)" />
+                <span id="current-language">Brasil</span>
+                <svg viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <ul class="dropdown-menu" id="language-menu">
+                <li data-lang="pt-BR">
+                  <img src="../../assets/flags/flag-br.png" alt="Brasil" />
+                  <span>Português (Brasil)</span>
+                </li>
+                <li data-lang="pt-PT">
+                  <img src="../../assets/flags/flag-pt.png" alt="Portugal" />
+                  <span>Português (Portugal)</span>
+                </li>
+                <li data-lang="en-US">
+                  <img src="../../assets/flags/flag-usa.png" alt="English" />
+                  <span>English (USA)</span>
+                </li>
+                <li data-lang="ar-SA">
+                  <img src="../../assets/flags/flag-ar.png" alt="العربية" />
+                  <span>العربية</span>
+                </li>
+              </ul>
+            </div>
+            <button class="top-icon" id="discord-button" title="Discord">
+              <svg viewBox="0 0 24 24"><path d="M20 2a3 3 0 0 1 3 3v14a3 3 0 0 1-3 3h-2l-.6-2.4a12.7 12.7 0 0 0 2.6-1.1l-1.2-.6a9.5 9.5 0 0 1-2.4 1 11.7 11.7 0 0 1-5-.2 12.6 12.6 0 0 1-2.4-1l-1.2.6a12.7 12.7 0 0 0 2.6 1.1L6 22H4a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h5.5l.3 1.2A12.5 12.5 0 0 1 12 2a12.5 12.5 0 0 1 2.2.2L14.5 2H20zm-8 6.9c-1.2 0-2.1.9-2.1 2s.9 2 2.1 2 2.1-.9 2.1-2-.9-2-2.1-2zm6 0c-1.2 0-2.1.9-2.1 2s.9 2 2.1 2 2.1-.9 2.1-2-.9-2-2.1-2z"/></svg>
+            </button>
+            <button class="top-icon shop-button" id="shop-button" title="Comprar Keys">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            </button>
+            <div class="dropdown palette-selector">
+              <button id="palette-button" data-i18n="palette">Paleta de cores</button>
+              <ul class="dropdown-menu" id="palette-menu">
+                <li data-palette="royal"><span class="dot royal"></span>Royal Neon</li>
+                <li data-palette="sunset"><span class="dot sunset"></span>Sunset Pulse</li>
+                <li data-palette="aqua"><span class="dot aqua"></span>Aqua Stream</li>
+                <li data-palette="magenta"><span class="dot magenta"></span>Pink Surge</li>
+              </ul>
+            </div>
+            <button class="vip-button" id="vip-button" data-i18n="vip">Seja VIP</button>
+            <button class="ghost devtools-btn" id="toggle-logs-panel">📋 Logs</button>
+            <div class="window-controls">
+              <button class="window-btn" id="minimize-window" title="Minimizar">
+                <span></span>
+              </button>
+              <button class="window-btn close" id="close-window" title="Fechar">
+                <span></span>
+              </button>
+            </div>
+          </div>
+        </header>
+        <!-- Card de aviso quando API está offline -->
+        <div id="api-maintenance-card" class="modern-card api-maintenance-card" hidden style="display: none; margin: 16px; background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.3);">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <span style="font-size: 24px;">⚠️</span>
+            <div style="flex: 1;">
+              <h3 style="margin: 0; color: #ffc107; font-size: 16px; font-weight: 600;">Painel em Manutenção</h3>
+            </div>
+          </div>
+          <p style="margin: 0 0 16px 0; color: rgba(255, 255, 255, 0.8); line-height: 1.5; font-size: 14px;">
+            Painel está passando por atualizações, se você possui key Básico/VIP, as ações foram limitadas, aguardem...
+          </p>
+          <button id="api-maintenance-retry-btn" class="modern-btn" style="width: 100%; background: rgba(255, 193, 7, 0.2); color: #ffc107; border: 1px solid rgba(255, 193, 7, 0.4);">
+            <span>🔄 Tentar novamente</span>
+          </button>
+        </div>
+
+        <section class="panel-section active" data-section="general">
+          <div class="general-layout">
+            <!-- Top Cards Row -->
+            <div class="top-cards-row">
+              <!-- Ativar Key Card -->
+              <div class="modern-card activate-key-card-top" id="activate-key-card-top">
+                <div class="activate-key-header">
+                  <span class="activate-key-icon">🔑</span>
+                  <span class="activate-key-title">ATIVAR KEY</span>
+                </div>
+                <div class="activate-key-form-top" id="activate-key-form-top">
+                  <input 
+                    type="text" 
+                    id="dashboard-key-input-top" 
+                    placeholder="(insira a key)"
+                    class="key-input-top"
+                    autocomplete="off"
+                    spellcheck="false"
+                  />
+                  <button class="modern-btn btn-primary" id="dashboard-activate-key-btn-top">
+                    <span>ATIVAR</span>
+                  </button>
+                </div>
+                <div class="activate-key-status-top" id="activate-key-status-top" hidden></div>
+              </div>
+              
+              <!-- User Card (escondido por padrão, mostrado quando tiver key) -->
+              <div class="modern-card user-card" id="user-card" style="display: none;">
+                <div class="user-card-header" style="display: none;">
+                  <div class="user-avatar-small" style="display: none;">
+                    <img id="hero-discord-avatar" src="" alt="Avatar" style="display: none;" />
+                  </div>
+                  <div class="user-info-small" style="display: none;">
+                    <h3 id="hero-discord-name" style="display: none;">Carregando...</h3>
+                    <span id="hero-discord-plan" class="plan-badge-small" style="display: none;">-</span>
+                  </div>
+                </div>
+                <div class="user-card-body">
+                  <div class="user-details-item">
+                    <span class="detail-label">Key:</span>
+                    <span id="hero-discord-key" class="detail-value">-</span>
+                  </div>
+                  <div class="user-details-item">
+                    <span class="detail-label">Dias restantes:</span>
+                    <span id="hero-discord-days" class="detail-value">-</span>
+                  </div>
+                  <div class="user-details-item">
+                    <span class="detail-label">Expira em:</span>
+                    <span id="hero-discord-expires" class="detail-value">-</span>
+                  </div>
+                  <div class="user-details-item" id="user-pro-status-item" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                    <span class="detail-label" style="display: flex; align-items: center; gap: 6px;">
+                      <span style="font-size: 16px;">⭐</span>
+                      <span>Status:</span>
+                    </span>
+                    <span class="detail-value" id="user-pro-status-value" style="color: #10b981; font-weight: 600;">-</span>
+                  </div>
+                  <div class="user-details-item" id="user-pro-description-item" style="display: none; margin-top: 8px; font-size: 13px; color: rgba(255, 255, 255, 0.7); line-height: 1.4;">
+                    <span id="user-pro-description">-</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Optimization Card -->
+              <div class="modern-card optimization-card">
+                <div class="opt-card-header">
+                  <span class="opt-icon">⚡</span>
+                  <span class="opt-label">Otimização</span>
+                  <span
+                    class="tooltip-icon"
+                    id="optimization-warning-tooltip"
+                    data-tooltip="Recomendado utilizar as funções de otimização e depois fechar painel, (não indicado jogar com ele aberto). pois ele é 100% feito pra orimizar tudo, e não rodar em segundo plano"
+                  >?</span>
+                </div>
+                <div class="opt-gauge-small">
+                  <strong id="gauge-value">0%</strong>
+                  <span class="opt-status" id="gauge-status-label">-</span>
+                </div>
+              </div>
+
+              <!-- IMPORTANTE Card (movido do meio para cá) -->
+              <div class="modern-card pro-card important-warning-card-top">
+                <div class="pro-card-header">
+                  <span class="pro-icon warning-icon">⚠️</span>
+                  <span class="pro-label warning-label">IMPORTANTE</span>
+                </div>
+                <div class="pro-card-body">
+                  <p class="important-warning-text" style="margin: 0; font-size: 13px; color: rgba(255, 255, 255, 0.7); line-height: 1.5; text-align: left;">
+                    Antes de usar o painel ou fazer qualquer alteração no sistema, é essencial criar um ponto de restauração — tanto pelo painel quanto por métodos externos. Assim, se algo der errado, você pode voltar ao estado anterior com segurança.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content-area">
+              <!-- Left Side - Buttons -->
+              <div class="buttons-section">
+                <!-- Aviso API Offline no Dashboard -->
+                <div id="dashboard-api-offline-warning" class="dashboard-api-warning" hidden>
+                  <div class="dashboard-api-warning-content">
+                    <span class="dashboard-api-warning-icon">⚠️</span>
+                    <div class="dashboard-api-warning-text">
+                      <strong>Acesso Limitado</strong>
+                      <p>Funcionalidades Básico/VIP temporariamente offline para manutenção. Aguardem...</p>
+                    </div>
+                    <button id="dashboard-api-retry-btn" class="dashboard-api-retry-btn">Consultar Key</button>
+                  </div>
+                </div>
+                <button id="activate-services" class="modern-btn btn-primary">
+                  <span class="btn-icon">🔧</span>
+                  <span class="btn-label-with-tooltip">
+                    <span>Ativar Serviços</span>
+                    <span
+                      class="tooltip-icon"
+                      data-tooltip="Ativar serviços é importante, assim evita tomar W.O em (ORGS)"
+                    >?</span>
+                  </span>
+                </button>
+                <button id="optimize-simple" class="modern-btn btn-accent">
+                  <span class="btn-icon">⚡</span>
+                  <span>Otimizar Simples</span>
+                </button>
+                <button id="optimize-basic" class="modern-btn btn-accent">
+                  <span class="btn-icon">⚡</span>
+                  <span>Otimizar Básico</span>
+                </button>
+                <button id="optimize-vip" class="modern-btn btn-vip">
+                  <span class="btn-icon">⭐</span>
+                  <span>Otimizar VIP</span>
+                </button>
+                <div class="summary-card preset-card" id="preset-card" style="background: rgba(55, 55, 65, 0.95); border: 1px solid rgba(112, 88, 255, 0.3); border-radius: 12px; padding: 14px; transition: all 0.3s ease;">
+                  <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, rgba(112, 88, 255, 0.25), rgba(139, 92, 246, 0.25)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                      📋
+                    </div>
+                    <div style="flex: 1; display: flex; align-items: center; gap: 6px;">
+                      <div style="flex: 1;">
+                        <h3 style="margin: 0; font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.98);" id="preset-card-title">Predefinição</h3>
+                        <p style="margin: 2px 0 0 0; font-size: 11px; color: rgba(255, 255, 255, 0.7);" id="preset-card-subtitle">Crie e execute otimizações personalizadas</p>
+                      </div>
+                      <span
+                        class="tooltip-icon"
+                        id="preset-tooltip"
+                        title="Deixe uma predefinição do jeito que você quiser, assim, ele vai executar o que foi selecionado por você"
+                      >?</span>
+                    </div>
+                  </div>
+                  <button id="preset-button" class="modern-btn" style="width: 100%; margin-bottom: 6px; padding: 10px 16px; font-size: 13px; background: rgba(55, 55, 65, 0.95); border: 1px solid rgba(112, 88, 255, 0.4); color: rgba(255, 255, 255, 0.95); font-weight: 600; box-shadow: 0 2px 8px rgba(112, 88, 255, 0.2);">
+                    <span class="btn-icon" style="font-size: 14px;">📋</span>
+                    <span id="preset-button-text">Criar</span>
+                  </button>
+                  <div id="preset-actions" style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <button id="preset-execute" class="modern-btn btn-accent" style="flex: 1; min-width: 0; padding: 6px 10px; font-size: 11px; display: flex; align-items: center; justify-content: center; gap: 4px;" disabled>
+                      <span class="btn-icon" style="font-size: 12px;">▶️</span>
+                      <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Executar</span>
+                    </button>
+                    <button id="preset-edit" class="modern-btn" style="flex: 0 0 auto; padding: 6px 12px; font-size: 10px; background: rgba(55, 55, 65, 0.95); border: 1px solid rgba(112, 88, 255, 0.3); color: rgba(255, 255, 255, 0.8); display: flex; align-items: center; justify-content: center; gap: 4px;" disabled>
+                      <span class="btn-icon" style="font-size: 11px;">✏️</span>
+                      <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Editar</span>
+                    </button>
+                    <button id="preset-delete" class="modern-btn" style="flex: 1; min-width: 0; padding: 6px 10px; font-size: 11px; background: rgba(239, 68, 68, 0.2); color: #ef4444; border-color: rgba(239, 68, 68, 0.3); display: flex; align-items: center; justify-content: center; gap: 4px;" disabled>
+                      <span class="btn-icon" style="font-size: 12px;">🗑️</span>
+                      <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Apagar</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Side - System Info Grid -->
+              <div class="system-info-grid">
+                <div class="summary-card referral-card" id="referral-card" style="display: none;">
+                  <div class="referral-header">
+                    <span class="referral-icon">🎉</span>
+                    <span class="referral-label">Indique e Ganhe!</span>
+                  </div>
+                  <div class="referral-code-section">
+                    <div class="referral-code-label-row">
+                      <span class="referral-code-label">Seu código de convite é esse</span>
+                      <span
+                        class="tooltip-icon"
+                        id="referral-tooltip"
+                        title="10% Desconto na indicação. +10 Dias pra quem indicou. (abre ticket no dc comprovando que alguem usou seu codigo)"
+                      >?</span>
+                    </div>
+                    <div class="referral-code-display">
+                      <span class="referral-code-value" id="referral-code-value">-</span>
+                      <button class="referral-copy-btn" id="referral-copy-btn" title="Copiar código">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                  <p class="referral-benefits">
+                    <strong>10% Desconto na indicação</strong><br/>
+                    <strong>+10 Dias pra quem indicou</strong><br/><br/>
+                    (abre ticket no dc comprovando que alguem usou seu codigo)
+                  </p>
+                </div>
+                <!-- IMPORTANTE Card removido - conteúdo movido para o card PRO no topo -->
+                <div class="summary-card important-warning-card" id="important-warning-card" style="display: none;">
+                  <div class="summary-header">
+                    <span class="summary-title">⚠️ IMPORTANTE</span>
+                  </div>
+                  <p class="important-warning-text">
+                    Antes de usar o painel ou fazer qualquer alteração no sistema, é essencial criar um ponto de restauração — tanto pelo painel quanto por métodos externos. Assim, se algo der errado, você pode voltar ao estado anterior com segurança.
+                  </p>
+                </div>
+                <div class="summary-card">
+                  <div class="summary-header">
+                    <span class="summary-title">CPU</span>
+                  </div>
+                  <p class="summary-subtitle" id="summary-cpu-name">-</p>
+                  <div class="summary-meta" id="summary-cpu-cores">Núcleos: -</div>
+                  <div class="summary-evaluation" id="summary-cpu-evaluation" style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.1); font-size: 12px; color: rgba(255, 255, 255, 0.7); line-height: 1.4;"></div>
+                </div>
+                <div class="summary-card">
+                  <div class="summary-header">
+                    <span class="summary-title">GPU</span>
+                  </div>
+                  <p class="summary-subtitle" id="summary-gpu-name">-</p>
+                  <div class="summary-meta" id="summary-gpu-vram">VRAM 0 MB</div>
+                  <div class="summary-evaluation" id="summary-gpu-evaluation" style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.1); font-size: 12px; color: rgba(255, 255, 255, 0.7); line-height: 1.4;"></div>
+                </div>
+                <div class="summary-card summary-card-compact">
+                  <div class="summary-header">
+                    <span class="summary-title">Memória</span>
+                    <span class="summary-value" id="summary-memory-usage">0 / 0 GB</span>
+                  </div>
+                  <div class="metric-bar compact">
+                    <div class="metric-progress" id="summary-memory-progress"></div>
+                  </div>
+                  <div class="summary-meta" id="summary-memory-free">Disponível: 0 GB</div>
+                </div>
+                <div class="summary-card summary-card-compact">
+                  <div class="summary-header">
+                    <span class="summary-title">Armazenamento</span>
+                    <span class="summary-value" id="summary-storage-usage">0 / 0 GB</span>
+                  </div>
+                  <div class="metric-bar compact">
+                    <div class="metric-progress" id="summary-storage-progress"></div>
+                  </div>
+                  <div class="summary-meta">Usado: <span id="summary-storage-used">0 GB</span></div>
+                  <div class="summary-meta">Livre: <span id="summary-storage-free">0 GB</span></div>
+                  <div class="summary-meta">Unidade: <span id="summary-storage-mount">C:</span></div>
+                  <div class="summary-meta">Discos detectados: <span id="summary-storage-devices">0</span></div>
+                </div>
+                <div class="summary-card">
+                  <div class="summary-header">
+                    <span class="summary-title">Processos</span>
+                    <span class="summary-value" id="summary-process-running">0</span>
+                  </div>
+                  <p class="summary-subtitle" id="summary-process-total">Total: 0</p>
+                  <div class="summary-meta" id="summary-process-meta">Dormindo: 0 • Bloqueados: 0</div>
+                  <div class="summary-meta" id="summary-os-label">Sistema: -</div>
+                </div>
+                <div class="summary-card internet-speed-card">
+                  <div class="summary-header">
+                    <span class="summary-title">🌐 Velocidade Internet</span>
+                    <span class="speed-status" id="internet-speed-status"></span>
+                  </div>
+                  <div class="speed-metrics">
+                    <div class="speed-item">
+                      <span class="speed-label">Download:</span>
+                      <span class="speed-value" id="internet-download">-</span>
+                      <span class="speed-unit">Mbps</span>
+                    </div>
+                    <div class="speed-item">
+                      <span class="speed-label">Upload:</span>
+                      <span class="speed-value" id="internet-upload">-</span>
+                      <span class="speed-unit">Mbps</span>
+                    </div>
+                    <div class="speed-item">
+                      <span class="speed-label">Ping:</span>
+                      <span class="speed-value" id="internet-ping">-</span>
+                      <span class="speed-unit">ms</span>
+                    </div>
+                  </div>
+                  <button class="speed-test-button" id="internet-speed-test-btn">
+                    <span class="button-icon">🔄</span>
+                    <span>Verificar denovo</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel-section" data-section="optimization">
+          <article class="card config-card">
+            <header class="card-header config-header">
+              <div class="config-header-top">
+                <div>
+                  <h2>Otimização</h2>
+                  <p class="config-note">Configure e otimize seu sistema Windows para melhor desempenho.</p>
+                </div>
+              </div>
+            </header>
+            <div class="card-body config-layout">
+              <aside class="config-catalog">
+                <button data-view="panel-basic-settings" class="active">⚙️ Configurações básicas</button>
+                <button data-view="panel-windows-optimize">🚀 Otimizar Windows</button>
+                <button data-view="panel-power-plan">🔋 Plano Energia</button>
+                <button data-view="panel-cleanup-windows">🧹 Limpeza Windows</button>
+                <button data-view="panel-disable-windows">🚫 Desativar Windows</button>
+                <button data-view="panel-important-scripts">📜 Scripts Importantes</button>
+                <button data-view="panel-booster-robusta">💪 Booster Robusta</button>
+              </aside>
+              <div class="config-panels">
+                <div class="config-panel active" id="panel-basic-settings">
+                  <div class="list" id="optimization-list"></div>
+                </div>
+                <div class="config-panel" id="panel-windows-optimize">
+                  <div class="list" id="windows-optimize-list"></div>
+                </div>
+                <div class="config-panel" id="panel-power-plan">
+                  <div style="margin-bottom: 16px;">
+                    <button class="backup-button ghost" id="power-plan-remove-all-btn" style="color: #ef4444;">
+                      <span class="button-icon">🗑️</span>
+                      <span>Apagar todos planos energia</span>
+                    </button>
+                  </div>
+                  <div class="script-grid" id="powerplan-empty" hidden>
+                    <p>Nenhum script encontrado.</p>
+                  </div>
+                  <div class="script-grid" id="powerplan-apply"></div>
+                </div>
+                <div class="config-panel" id="panel-cleanup-windows">
+                  <div class="script-grid" id="cleanup-empty" hidden>
+                    <p>Nenhum script encontrado.</p>
+                  </div>
+                  <div class="script-grid" id="cleanup-apply"></div>
+                </div>
+                <div class="config-panel" id="panel-disable-windows">
+                  <div style="margin-bottom: 16px;">
+                    <button class="backup-button ghost" id="disable-windows-revert-btn" style="color: #10b981;">
+                      <span class="button-icon">🔄</span>
+                      <span>Reverter</span>
+                    </button>
+                  </div>
+                  <div class="script-grid" id="disable-empty" hidden>
+                    <p>Nenhum script encontrado.</p>
+                  </div>
+                  <div class="script-grid" id="disable-apply"></div>
+                </div>
+
+                <div class="config-panel" id="panel-important-scripts">
+                  <div class="script-grid" id="important-empty" hidden>
+                    <p>Nenhum script encontrado.</p>
+                  </div>
+                  <div class="script-grid" id="important-apply"></div>
+                </div>
+                <div class="config-panel" id="panel-booster-robusta">
+                  <div class="script-grid" id="booster-empty" hidden>
+                    <p>Nenhum script encontrado.</p>
+                  </div>
+                  <div class="script-grid" id="booster-apply"></div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="panel-section" data-section="forced-optimization">
+          <article class="card config-card">
+            <header class="card-header config-header">
+              <div class="config-header-top">
+                <div>
+                  <h2>⚡ Otimização Forçada</h2>
+                  <p class="config-note">Otimizações avançadas do sistema com suporte para C++ e JavaScript. Aplique otimizações específicas para melhorar o desempenho.</p>
+                </div>
+              </div>
+            </header>
+            <div class="card-body config-layout">
+              <aside class="config-catalog">
+                <button data-view="forced-opt-processos" class="active">🔄 Processos</button>
+                <button data-view="forced-opt-sistema">🖥️ Sistema</button>
+                <button data-view="forced-opt-memoria">💾 Memória RAM</button>
+                <button data-view="forced-opt-rede">🌐 Rede</button>
+                <button data-view="forced-opt-disco">💿 Disco</button>
+                <button data-view="forced-opt-gpu">🎮 GPU</button>
+                <button data-view="forced-opt-energia">⚡ Energia</button>
+                <button data-view="forced-opt-servicos">🔧 Serviços</button>
+                <button data-view="forced-opt-registro">📝 Registro</button>
+                <button data-view="forced-opt-monitoramento">📊 Monitoramento</button>
+                <button data-view="forced-opt-modos">🎯 Modos</button>
+                <button data-view="forced-opt-extras">✨ Extras</button>
+              </aside>
+              <div class="config-panels">
+                <!-- Processos -->
+                <div class="config-panel active" id="forced-opt-processos">
+                  <div class="forced-opt-grid" id="forced-opt-grid-processos"></div>
+                </div>
+                <!-- Sistema -->
+                <div class="config-panel" id="forced-opt-sistema">
+                  <div class="forced-opt-grid" id="forced-opt-grid-sistema"></div>
+                </div>
+                <!-- Memória -->
+                <div class="config-panel" id="forced-opt-memoria">
+                  <div class="forced-opt-grid" id="forced-opt-grid-memoria"></div>
+                </div>
+                <!-- Rede -->
+                <div class="config-panel" id="forced-opt-rede">
+                  <div class="forced-opt-grid" id="forced-opt-grid-rede"></div>
+                </div>
+                <!-- Disco -->
+                <div class="config-panel" id="forced-opt-disco">
+                  <div class="forced-opt-grid" id="forced-opt-grid-disco"></div>
+                </div>
+                <!-- GPU -->
+                <div class="config-panel" id="forced-opt-gpu">
+                  <div class="forced-opt-grid" id="forced-opt-grid-gpu"></div>
+                </div>
+                <!-- Energia -->
+                <div class="config-panel" id="forced-opt-energia">
+                  <div class="forced-opt-grid" id="forced-opt-grid-energia"></div>
+                </div>
+                <!-- Serviços -->
+                <div class="config-panel" id="forced-opt-servicos">
+                  <div class="forced-opt-grid" id="forced-opt-grid-servicos"></div>
+                </div>
+                <!-- Registro -->
+                <div class="config-panel" id="forced-opt-registro">
+                  <div class="forced-opt-grid" id="forced-opt-grid-registro"></div>
+                </div>
+                <!-- Monitoramento -->
+                <div class="config-panel" id="forced-opt-monitoramento">
+                  <div class="forced-opt-grid" id="forced-opt-grid-monitoramento"></div>
+                </div>
+                <!-- Modos -->
+                <div class="config-panel" id="forced-opt-modos">
+                  <div class="forced-opt-grid" id="forced-opt-grid-modos"></div>
+                </div>
+                <!-- Extras -->
+                <div class="config-panel" id="forced-opt-extras">
+                  <div class="forced-opt-grid" id="forced-opt-grid-extras"></div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="panel-section" data-section="config">
+          <article class="card config-card">
+            <header class="card-header config-header">
+              <div class="config-header-top">
+                <div>
+                  <h2>Ajustes / Dispositivos</h2>
+                  <p class="config-note">Gerencie rapidamente ajustes do BlueStacks focados no Free Fire. Sempre crie backup antes de aplicar.</p>
+                </div>
+              </div>
+            </header>
+            <div class="card-body config-layout">
+              <aside class="config-catalog">
+                <button data-view="panel-emulator" class="active">🎮 Ajustar Emulador</button>
+                <button data-view="panel-delay">⚡ Tirar delay</button>
+                <button data-view="panel-apps">📦 Otimizar com APPS</button>
+                <button data-view="panel-fake-processors">🧠 Falsos Processadores</button>
+                <button data-view="panel-cursors">🖱️ Cursores</button>
+                <button data-view="panel-mouse-fix">🖱️ Mouse Fix</button>
+                <button data-view="panel-emulators">🔥 FF / Emu</button>
+              </aside>
+              <div class="config-panels">
+                <div class="config-panel active" id="panel-emulator">
+                  <div class="config-actions" style="margin: -6px 0 8px 0; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                    <button class="backup-button primary" id="bs-verify-button">
+                      <span class="button-icon">🔍</span>
+                      <span>Verificar pasta</span>
+                    </button>
+                    <button class="backup-button primary" id="bs-optimize-emulator" data-bs-control style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); border: 2px solid rgba(220, 53, 69, 0.5); box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3); font-weight: 600; position: relative;">
+                      <span class="button-icon">⚙️</span>
+                      <span>Otimizar Emulador</span>
+                      <span class="tooltip-icon-red" id="bs-optimize-tooltip" data-tooltip="Usem esse botão com emulador fechado. Esse botão vai desativar as teclas e opções do emulador que é inutil, para você ter 100% aproveito emulador liso." style="margin-left: 8px; width: 16px; height: 16px; line-height: 16px; font-size: 11px; position: relative; z-index: 10;">?</span>
+                    </button>
+                    <span id="bs-status-label" class="status-label">Aguardando verificação</span>
+                  </div>
+                  <div class="config-grid">
+                    <section class="config-block" data-require="config">
+                      <h3>FPS do emulador</h3>
+                      <p class="config-hint">Define o valor de <code>max_fps</code> no arquivo <strong>bluestacks.conf</strong>.</p>
+                      <div class="config-field">
+                        <label for="bs-fps-input">FPS máximo</label>
+                        <input id="bs-fps-input" type="number" min="30" max="600" placeholder="Ex.: 240" data-bs-control />
+                      </div>
+                      <div class="config-actions-row">
+                        <button class="primary" id="bs-fps-apply" data-bs-control>Aplicar</button>
+                        <button class="ghost" id="bs-fps-revert" data-bs-control>Reverter</button>
+                      </div>
+                    </section>
+
+                    <section class="config-block" data-require="config">
+                      <div class="block-header">
+                        <div>
+                          <h3>Tweaks / Cursores</h3>
+                          <p class="config-hint">Altera o valor <code>"Tweaks"</code> para otimizar sensibilidade e mira.</p>
+                        </div>
+                        <button class="ghost mini" data-toggle="bs-tweaks-presets">Mais opções</button>
+                      </div>
+                      <div class="config-field">
+                        <label for="bs-tweaks-input">
+                          Tweaks atual
+                          <span class="tooltip-icon" title="Util para colocar em emuladores que não permitem ajustes enormes">?</span>
+                        </label>
+                        <input id="bs-tweaks-input" type="number" placeholder="Ex.: 16450" data-bs-control />
+                      </div>
+                      <div class="preset-list" id="bs-tweaks-presets" hidden style="display: none !important;">
+                        <div class="preset-column">
+                          <h4>Ajustes menores</h4>
+                          <p class="preset-hint">Alguns ajustes podem não funcionar dependendo do emulador.</p>
+                          <div class="preset-buttons">
+                            <button data-value="16450" class="preset-option">16450 (Padrão)</button>
+                            <button data-value="16402" class="preset-option">16402</button>
+                            <button data-value="16458" class="preset-option">16458</button>
+                            <button data-value="88066" class="preset-option">88066</button>
+                            <button data-value="21074" class="preset-option">21074</button>
+                            <button data-value="21010" class="preset-option">21010</button>
+                            <button data-value="21058" class="preset-option">21058</button>
+                            <button data-value="18514" class="preset-option">18514</button>
+                          </div>
+                        </div>
+                        <div class="preset-column">
+                          <h4>Ajustes maiores</h4>
+                          <p class="preset-hint">Necessário testar e verificar a melhor resposta para o seu PC.</p>
+                          <div class="preset-buttons">
+                            <button data-value="622416450" class="preset-option">622416450</button>
+                            <button data-value="1000000010" class="preset-option">1000000010</button>
+                            <button data-value="158816450" class="preset-option">158816450</button>
+                            <button data-value="838816450" class="preset-option">838816450</button>
+                            <button data-value="948816450" class="preset-option">948816450</button>
+                            <button data-value="807488066" class="preset-option">807488066</button>
+                            <button data-value="807488082" class="preset-option">807488082</button>
+                            <button data-value="178016450" class="preset-option">178016450</button>
+                            <button data-value="288016450" class="preset-option">288016450</button>
+                            <button data-value="858016450" class="preset-option">858016450</button>
+                            <button data-value="968016450" class="preset-option">968016450</button>
+                            <button data-value="2000000010" class="preset-option">2000000010</button>
+                            <button data-value="102421066" class="preset-option">102421066</button>
+                            <button data-value="102421058" class="preset-option">102421058</button>
+                            <button data-value="800021066" class="preset-option">800021066</button>
+                            <button data-value="148816450" class="preset-option">148816450</button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="config-actions-row">
+                        <button class="primary" id="bs-tweaks-apply" data-bs-control>Aplicar</button>
+                        <button class="ghost" id="bs-tweaks-revert" data-bs-control>Reverter</button>
+                      </div>
+                    </section>
+
+                    <section class="config-block" data-require="config">
+                      <div class="block-header">
+                        <div>
+                          <h3>Alterar dispositivo <span class="tooltip-icon-red" id="device-help-tooltip" data-tooltip-image="Imagens/Configurar emulador/opçãoemulador.png">?</span></h3>
+                          <p class="config-hint">Atualiza marca, fabricante e modelo customizado para liberar recursos adicionais.</p>
+                        </div>
+                        <button class="ghost mini" data-toggle="bs-device-presets">Mais opções</button>
+                      </div>
+                      <div class="config-field-group">
+                        <div class="config-field">
+                          <label for="bs-device-brand">Marca</label>
+                          <input id="bs-device-brand" type="text" placeholder="Ex.: Apple" data-bs-control />
+                        </div>
+                        <div class="config-field">
+                          <label for="bs-device-manufacturer">Fabricante</label>
+                          <input id="bs-device-manufacturer" type="text" placeholder="Ex.: Apple" data-bs-control />
+                        </div>
+                        <div class="config-field">
+                          <label for="bs-device-model">Modelo</label>
+                          <input id="bs-device-model" type="text" placeholder="Ex.: apple_A2342" data-bs-control />
+                        </div>
+                      </div>
+                      <div class="preset-list wide" id="bs-device-presets" hidden style="display: none !important;">
+                        <p class="preset-hint">Selecione um dispositivo pré-configurado (alguns exigem reinstalar o Free Fire para habilitar 120 FPS).</p>
+                        <div class="preset-table">
+                          <button class="preset-device" data-brand="Xiaomi" data-manufacturer="Xiaomi" data-model="M2003J15sg">Redmi Note 9 (M2003J15sg)</button>
+                          <button class="preset-device" data-brand="Xiaomi" data-manufacturer="Xiaomi" data-model="m2101k7ag">Redmi Note 10 (m2101k7ag)</button>
+                          <button class="preset-device" data-brand="Xiaomi" data-manufacturer="Xiaomi" data-model="24030PN60C">Xiaomi 14 Ultra (24030PN60C)</button>
+                          <button class="preset-device" data-brand="Huawei" data-manufacturer="Huawei" data-model="Nova 13 Pro">Huawei Nova 13 Pro</button>
+                          <button class="preset-device" data-brand="Xiaomi" data-manufacturer="Xiaomi" data-model="M2004J19C">Redmi 9 (M2004J19C)</button>
+                          <button class="preset-device" data-brand="Apple" data-manufacturer="Apple" data-model="apple_A2342">Apple (apple_A2342)</button>
+                          <button class="preset-device" data-brand="realme" data-manufacturer="realme" data-model="RMX5070">realme 14 50 (RMX5070)</button>
+                          <button class="preset-device" data-brand="asus" data-manufacturer="asus" data-model="ASUS_Z01QD">ASUS_Z01QD</button>
+                          <button class="preset-device" data-brand="Samsung" data-manufacturer="Samsung" data-model="SM-S928B">Samsung SM-S928B</button>
+                          <button class="preset-device" data-brand="ASUS" data-manufacturer="ASUS" data-model="AI2401_D">ASUS AI2401_D</button>
+                          <button class="preset-device" data-brand="asus" data-manufacturer="asus" data-model="ASUS_AI2201">ASUS_AI2201</button>
+                          <button class="preset-device" data-brand="OnePlus" data-manufacturer="OnePlus" data-model="ONEPLUS A5000">OnePlus A5000</button>
+                          <button class="preset-device" data-brand="Apple" data-manufacturer="Apple" data-model="iphone 14 Pro Max">iPhone 14 Pro Max</button>
+                          <button class="preset-device" data-brand="samsung" data-manufacturer="samsung" data-model="SM-M315F">Samsung SM-M315F</button>
+                        </div>
+                      </div>
+                      <div class="config-actions-row">
+                        <button class="primary" id="bs-device-apply" data-bs-control>Aplicar</button>
+                        <button class="ghost" id="bs-device-revert" data-bs-control>Reverter</button>
+                      </div>
+                    </section>
+
+                    <section class="config-block" data-require="config">
+                      <h3>Alterar DPI</h3>
+                      <p class="config-hint">Ajusta a densidade de pixels da instância Pie64.</p>
+                      <div class="config-field">
+                        <label for="bs-dpi-input">DPI</label>
+                        <input id="bs-dpi-input" type="number" min="120" max="640" placeholder="Ex.: 440" data-bs-control />
+                      </div>
+                      <div class="config-actions-row">
+                        <button class="primary" id="bs-dpi-apply" data-bs-control>Aplicar</button>
+                        <button class="ghost" id="bs-dpi-revert" data-bs-control>Reverter</button>
+                      </div>
+                    </section>
+
+                    <section class="config-block" data-require="config">
+                      <h3>Resolução do emulador</h3>
+                      <p class="config-hint">Configura largura e altura utilizadas pelo BlueStacks.</p>
+                      <div class="config-field-group">
+                        <div class="config-field">
+                          <label for="bs-width-input">Horizontal (largura)</label>
+                          <input id="bs-width-input" type="number" min="640" max="4096" placeholder="Ex.: 1920" data-bs-control />
+                        </div>
+                        <div class="config-field">
+                          <label for="bs-height-input">Vertical (altura)</label>
+                          <input id="bs-height-input" type="number" min="480" max="4096" placeholder="Ex.: 1080" data-bs-control />
+                        </div>
+                      </div>
+                      <div class="config-actions-row">
+                        <button class="primary" id="bs-res-apply" data-bs-control>Aplicar</button>
+                        <button class="ghost" id="bs-res-revert" data-bs-control>Reverter</button>
+                      </div>
+                    </section>
+
+                    <section class="config-block" data-require="mapper">
+                      <h3>Tirar delay HUD</h3>
+                      <p class="config-hint">Altera o valor <code>"ExclusiveDelay"</code> nos arquivos de configuração do mapeamento.</p>
+                      <div class="config-field">
+                        <label for="bs-delay-input">ExclusiveDelay</label>
+                        <input id="bs-delay-input" type="number" placeholder="Ex.: 0" data-bs-control />
+                      </div>
+                      <div class="config-actions-row">
+                        <button class="primary" id="bs-delay-apply" data-bs-control>Aplicar</button>
+                        <button class="ghost" id="bs-delay-revert" data-bs-control>Reverter</button>
+                      </div>
+                    </section>
+
+                  </div>
+                </div>
+
+                <div class="config-panel" id="panel-apps">
+                  <p class="config-hint">Abra ferramentas auxiliares. Ao executar, a imagem de tutorial será aberta antes do app.</p>
+                  <div class="emulator-gallery" id="apps-gallery"></div>
+                  <div class="empty-state" id="apps-empty" hidden>
+                    Nenhuma ferramenta encontrada na pasta <strong>Imagens/OptimizationPack/APPS</strong>.
+                  </div>
+                </div>
+
+                <div class="config-panel" id="panel-fake-processors">
+                  <p class="config-hint">Escolha um processador falso para aplicar. Selecione de acordo com o tipo do seu processador (AMD ou INTEL).</p>
+                  
+                  <div class="config-actions" style="margin-bottom: 16px; display: flex; gap: 12px; flex-wrap: wrap;">
+                    <button class="backup-button primary" id="check-processor-btn">
+                      <span class="button-icon">🔍</span>
+                      <span>Conferir Processador</span>
+                    </button>
+                    <button class="backup-button" id="restart-pc-btn" style="background: linear-gradient(135deg, #ff6b6b, #ff4757); border: 2px solid rgba(255, 107, 107, 0.5); box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3); font-weight: 600; transition: all 0.3s ease;">
+                      <span class="button-icon">🔄</span>
+                      <span>Reiniciar PC para voltar ao normal</span>
+                    </button>
+                  </div>
+                  
+                  <div style="margin: 16px 0; padding: 14px 16px; background: linear-gradient(135deg, rgba(112, 88, 255, 0.15), rgba(155, 127, 255, 0.15)); border: 2px solid rgba(112, 88, 255, 0.4); border-radius: 8px; box-shadow: 0 4px 12px rgba(112, 88, 255, 0.2);">
+                    <p style="margin: 0; color: #d4b3ff; font-size: 14px; line-height: 1.6; font-weight: 500; text-align: center;">
+                      <span style="font-size: 16px; margin-right: 6px;">💡</span>
+                      <strong style="color: #e0c7ff;">Isso serve para você dar uma trolada nos amigos!</strong> Após aplicar, lá em <strong style="color: #f0d9ff;">(Gerenciador de Tarefas)</strong> vai mostrar o processador que você aplicou.
+                    </p>
+                  </div>
+                  
+                  <div class="script-section" style="margin-bottom: 24px;">
+                    <div class="script-header">
+                      <h4>Processadores AMD</h4>
+                      <span class="preset-hint">Selecione um processador AMD falso para aplicar.</span>
+                    </div>
+                    <div class="script-grid" id="fake-processors-amd"></div>
+                    <div class="empty-state" id="fake-processors-amd-empty" hidden>
+                      Nenhum processador AMD encontrado na pasta <strong>Imagens/Processadores AMD</strong>.
+                    </div>
+                  </div>
+
+                  <div class="script-section">
+                    <div class="script-header">
+                      <h4>Processadores INTEL</h4>
+                      <span class="preset-hint">Selecione um processador INTEL falso para aplicar.</span>
+                    </div>
+                    <div class="script-grid" id="fake-processors-intel"></div>
+                    <div class="empty-state" id="fake-processors-intel-empty" hidden>
+                      Nenhum processador INTEL encontrado na pasta <strong>Imagens/Processadores INTEL</strong>.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="config-panel" id="panel-cursors">
+                  <p class="config-hint">Escolha um pacote de cursor para aplicar. Visualize a imagem antes de aplicar.</p>
+                  <div class="config-actions" style="margin-bottom: 8px;">
+                    <button class="backup-button primary" id="cursor-default-apply" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); border: 2px solid rgba(239, 68, 68, 0.5); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);">
+                      <span class="button-icon">🖱️</span>
+                      <span>Voltar pro cursor padrão</span>
+                    </button>
+                  </div>
+                  <div class="emulator-gallery" id="cursors-gallery"></div>
+                  <div class="empty-state" id="cursors-empty" hidden>
+                    Nenhum cursor encontrado na pasta <strong>Imagens/OptimizationPack/Cursores</strong>.
+                  </div>
+                </div>
+
+                <div class="config-panel" id="panel-delay">
+                  <div class="delay-info">
+                    <p>Execute uma das otimizações abaixo para reduzir input lag. Os ajustes são aplicados automaticamente e são preparados para o Free Fire.</p>
+                  </div>
+                  <div class="script-section">
+                    <div class="script-header">
+                      <h4>Reverter ajustes</h4>
+                      <span class="preset-hint">Use estes scripts para desfazer qualquer alteração aplicada anteriormente.</span>
+                    </div>
+                    <div style="margin-bottom: 16px;">
+                      <button class="backup-button primary" id="inputlag-revert-all-btn">
+                        <span class="button-icon">🔄</span>
+                        <span>Reverter Remover</span>
+                      </button>
+                    </div>
+                    <div class="script-grid" id="inputlag-revert"></div>
+                  </div>
+                  <div class="script-section">
+                    <div class="script-header">
+                      <h4>Aplicar otimizações</h4>
+                    </div>
+                    <div class="script-grid" id="inputlag-apply"></div>
+                  </div>
+                  <div class="empty-state" id="inputlag-empty" hidden>
+                    Não foi possível localizar os scripts de input lag. Verifique a pasta <strong>Imagens/OptimizationPack/Regedits de Input Lag</strong>.
+                  </div>
+                </div>
+
+                <div class="config-panel" id="panel-mouse-fix">
+                  <div style="margin-bottom: 16px; padding: 14px 16px; background: linear-gradient(135deg, rgba(255, 193, 7, 0.15), rgba(255, 152, 0, 0.15)); border: 2px solid rgba(255, 193, 7, 0.4); border-radius: 8px; box-shadow: 0 4px 12px rgba(255, 193, 7, 0.2);">
+                    <p style="margin: 0; color: #ffc107; font-size: 14px; line-height: 1.6; font-weight: 500; text-align: center;">
+                      <span style="font-size: 16px; margin-right: 6px;">⚠️</span>
+                      <strong style="color: #ffc107;">Cuidado.</strong> Tem ORGS que não permitem uso de mouse fix. Evite tomar W.O por falta de atenção.
+                    </p>
+                  </div>
+                  
+                  <div style="margin-bottom: 24px;">
+                    <button class="backup-button primary" id="mouse-fix-remove-btn" style="width: 100%; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); border: 2px solid rgba(239, 68, 68, 0.5); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); font-weight: 600;">
+                      <span class="button-icon">🔄</span>
+                      <span>Remover Mouse Fix</span>
+                    </button>
+                    <p class="config-hint" style="margin-top: 8px; text-align: center;">Reverte todas as alterações de Mouse Fix aplicadas.</p>
+                  </div>
+                  
+                  <p class="config-hint">Aplique ajustes de mouse fix para melhorar a precisão. Cada opção tem diferentes níveis de sensibilidade.</p>
+                  
+                  <div class="script-section" style="margin-bottom: 24px;">
+                    <div class="script-header">
+                      <h4>Aplicar Mouse Fix</h4>
+                      <span class="preset-hint">Escolha uma opção de sensibilidade para aplicar.</span>
+                    </div>
+                    <div class="script-grid" id="mouse-fix-apply-grid"></div>
+                    <div class="empty-state" id="mouse-fix-apply-empty" hidden>
+                      Nenhum arquivo de Mouse Fix encontrado na pasta <strong>Imagens/OptimizationPack/Mouse fix</strong>.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="config-panel" id="panel-emulators">
+                  <p class="config-hint">Escolha o emulador desejado e clique em <strong>Baixar</strong> para abrir o link correspondente.</p>
+                  <div class="emulator-gallery" id="emulator-gallery"></div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="panel-section" data-section="backup">
+          <div class="backup-layout">
+            <article class="backup-hero-card">
+              <div class="backup-hero-content">
+                <div class="backup-hero-icon">💾</div>
+                <div class="backup-hero-text">
+                  <h2 data-i18n="restorePoints">Pontos de restauração</h2>
+                  <p data-i18n="restoreHint">Crie pontos de restauração sempre que aplicar ajustes importantes. Isso garante reversão rápida em caso de problemas.</p>
+                </div>
+              </div>
+              <div class="backup-actions">
+                <button class="backup-button primary" id="create-restore-point" data-i18n="createRestore">
+                  <span class="button-icon">➕</span>
+                  <span>Criar ponto agora</span>
+                </button>
+                <button class="backup-button outline" id="open-restore-settings" data-i18n="openRestore">
+                  <span class="button-icon">⚙️</span>
+                  <span>Abrir configurações</span>
+                </button>
+                <button class="backup-button ghost" id="clear-all-restore-points" style="color: #ef4444;">
+                  <span class="button-icon">🗑️</span>
+                  <span>Limpar Todos Backup</span>
+                </button>
+                <button class="backup-button outline" id="toggle-auto-backup" style="margin-top: 8px; width: 100%;">
+                  <span class="button-icon" id="auto-backup-icon">🔴</span>
+                  <span id="auto-backup-text">Fazer backup automático após abrir painel</span>
+                </button>
+              </div>
+            </article>
+
+            <article class="backup-card">
+              <header class="backup-card-header">
+                <h3>Pontos de restauração disponíveis</h3>
+                <span class="backup-count" id="restore-points-count">0 pontos</span>
+              </header>
+              <div class="restore-points-container" id="restore-points-container">
+                <div class="restore-loading">
+                  <div class="loading-spinner"></div>
+                  <p>Carregando pontos de restauração...</p>
+                </div>
+              </div>
+            </article>
+
+          </div>
+        </section>
+
+        <section class="panel-section" data-section="admin">
+          <article class="card config-card">
+            <header class="card-header config-header">
+              <div class="config-header-top">
+                <div>
+                  <h2>🔐 Painel Administrativo</h2>
+                  <p class="config-note">Gerencie keys e configurações do sistema.</p>
+                </div>
+              </div>
+            </header>
+            <div class="card-body config-layout">
+              <div class="config-panel active" style="padding: 24px;">
+                <div style="display: grid; gap: 20px;">
+                  <!-- Gerar Keys -->
+                  <div class="modern-card" style="padding: 20px;">
+                    <h3 style="margin: 0 0 16px 0; color: var(--text-primary); font-size: 18px;">Gerar Keys</h3>
+                    <div style="display: grid; gap: 16px;">
+                      <div style="display: flex; gap: 12px; align-items: end;">
+                        <div style="flex: 1;">
+                          <label style="display: block; margin-bottom: 8px; color: var(--text-secondary); font-size: 13px;">Dias de acesso</label>
+                          <input type="number" id="admin-key-days" min="1" max="3650" value="30" style="width: 100%; padding: 10px; background: rgba(55, 55, 65, 0.6); border: 1px solid rgba(112, 88, 255, 0.3); border-radius: 8px; color: var(--text-primary); font-size: 14px;" />
+                        </div>
+                        <button class="modern-btn btn-accent" id="admin-generate-vip-key" style="padding: 10px 20px;">
+                          <span>Gerar Key VIP</span>
+                        </button>
+                        <button class="modern-btn btn-accent" id="admin-generate-basic-key" style="padding: 10px 20px;">
+                          <span>Gerar Key Básico</span>
+                        </button>
+                        <button class="modern-btn btn-primary" id="admin-generate-mobile-key" style="padding: 10px 20px;">
+                          <span>📱 Gerar Key MOBILE</span>
+                        </button>
+                      </div>
+                      <div id="admin-key-result" style="display: none; padding: 12px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                          <div>
+                            <strong style="color: #10b981;">Key gerada com sucesso!</strong>
+                            <div style="margin-top: 8px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text-primary);" id="admin-generated-key"></div>
+                          </div>
+                          <button class="ghost mini" id="admin-copy-key" style="padding: 6px 12px; font-size: 12px;">
+                            <span>📋 Copiar</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <div class="optimize-overlay" id="optimize-overlay" hidden>
+      <div class="optimize-panel">
+        <div class="optimize-visual">
+          <div class="optimize-visual-card">
+            <img src="../../assets/icons/logo-app.png" alt="Y20 Booster" class="optimize-logo" />
+          </div>
+        </div>
+        <div class="optimize-content">
+          <div class="optimize-title-row">
+            <button class="optimize-back" id="optimize-back" hidden>
+              <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <h2 id="optimize-title">Aplicando otimização</h2>
+            <div class="optimize-metrics" id="optimize-metrics">
+              <span class="optimize-percent" id="optimize-progress-percent">0%</span>
+            </div>
+          </div>
+          <p class="optimize-subtitle" id="optimize-subtitle">Aguarde, a otimização está em andamento...</p>
+          <div class="optimize-progress">
+            <div class="optimize-progress-bar" id="optimize-progress-bar"></div>
+          </div>
+          <div class="optimize-log" id="optimize-log">
+            <ul class="optimize-log-list" id="optimize-results"></ul>
+          </div>
+          
+          <!-- Tela de conclusão (inicialmente escondida) -->
+          <div class="optimize-summary" id="optimize-summary" hidden>
+            <div class="optimize-summary-header">
+              <h3>Otimização concluída!</h3>
+            </div>
+            <div class="optimize-summary-stats" id="optimize-summary-stats">
+              <!-- Estatísticas serão preenchidas dinamicamente -->
+            </div>
+            <div class="optimize-summary-info">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+              <span>Reinicie o PC após a configuração completa</span>
+            </div>
+            <div class="optimize-summary-actions">
+              <button class="ghost" id="optimize-restart-pc">
+                <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                <span>Reiniciar o PC</span>
+              </button>
+              <button class="primary" id="optimize-continue">
+                <span>Continuar</span>
+              </button>
+            </div>
+          </div>
+          
+          <div class="optimize-tips" id="optimize-tips" hidden>
+            <strong>⚠️ Aviso:</strong>
+            <p id="optimize-tips-message">Alguns scripts requerem privilégios de administrador. Execute o painel como administrador para aplicar todas as otimizações.</p>
+          </div>
+          
+          <div class="optimize-actions">
+            <button class="ghost" id="optimize-cancel">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vip-modal" id="vip-modal" hidden>
+      <div class="vip-dialog">
+        <h2>Selecione a quantidade de núcleos</h2>
+        <p>Escolha o script correspondente à quantidade de núcleos do seu processador.</p>
+        <div class="vip-warning" style="margin: 12px 0; padding: 10px; background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.3); border-radius: 6px; color: #ffc107; font-size: 12px;">
+          ⚠️ <strong>Atenção:</strong> Escolha de acordo com a quantidade de núcleos do seu processador. Selecionar um valor incorreto pode causar problemas.
+        </div>
+        <div class="vip-options" id="vip-options"></div>
+        <div class="vip-actions">
+          <button class="ghost" id="vip-cancel">Cancelar</button>
+          <button class="primary" id="vip-confirm">Aplicar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="vip-modal" id="cancel-confirm-modal" hidden>
+      <div class="vip-dialog">
+        <h2>⚠️ Tem certeza?</h2>
+        <p>A otimização foi pausada. Escolha uma opção:</p>
+        <div class="optimize-confirm-info" style="margin: 16px 0; padding: 12px; background: rgba(112, 88, 255, 0.1); border: 1px solid rgba(112, 88, 255, 0.3); border-radius: 6px;">
+          <strong>O que foi executado até agora:</strong>
+          <div id="cancel-confirm-executed" style="margin-top: 8px; max-height: 200px; overflow-y: auto; font-size: 13px;"></div>
+        </div>
+        <div class="vip-actions" style="margin-top: 20px;">
+          <button class="ghost" id="cancel-confirm-cancel">Cancelar Processo</button>
+          <button class="primary" id="cancel-confirm-continue">Continuar Otimizar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de confirmação para .reg -->
+    <div class="vip-modal" id="reg-confirm-modal" hidden>
+      <div class="vip-dialog">
+        <h2 id="reg-confirm-title">Aplicar registro (.reg)</h2>
+        <p id="reg-confirm-message">Este script vai alterar o registro do Windows. Confirme para continuar.</p>
+        <div class="vip-actions" style="margin-top: 12px;">
+          <button class="ghost" id="reg-confirm-cancel">Cancelar</button>
+          <button class="primary" id="reg-confirm-accept">Confirmar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal visualizador de imagem -->
+    <div class="vip-modal" id="image-viewer-modal" hidden>
+      <div class="vip-dialog" style="max-width: 800px;">
+        <h2>Imagem de tutorial</h2>
+        <div style="max-height: 65vh; overflow:auto; margin: 10px 0; border-radius: 8px; background: rgba(255,255,255,0.04); padding: 8px;">
+          <img id="image-viewer-img" src="" alt="Imagem" style="max-width: 100%; height: auto; display: block; border-radius: 6px;" />
+        </div>
+        <div class="vip-actions" style="margin-top: 10px;">
+          <button class="primary" id="image-viewer-close">Fechar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de seleção de emulador BlueStacks -->
+    <div class="vip-modal" id="bluestacks-selector-modal" hidden>
+      <div class="vip-dialog" style="max-width: 600px;">
+        <h2>🔍 Múltiplos Emuladores Detectados</h2>
+        <p style="margin: 16px 0; color: var(--text-secondary);">Foram encontradas múltiplas instalações do BlueStacks. Selecione qual emulador deseja usar:</p>
+        <div id="bluestacks-instances-list" style="display: flex; flex-direction: column; gap: 12px; margin: 20px 0;">
+          <!-- Instâncias serão inseridas aqui via JavaScript -->
+        </div>
+        <div class="vip-actions" style="margin-top: 20px;">
+          <button class="ghost" id="bluestacks-selector-cancel">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de aviso para alterações que exigem emulador fechado -->
+    <div class="vip-modal" id="bluestacks-warning-modal" hidden>
+      <div class="vip-dialog" style="max-width: 500px;">
+        <h2>⚠️ Atenção</h2>
+        <div id="bluestacks-warning-message" style="margin: 20px 0; color: var(--text-secondary); line-height: 1.6;">
+          <!-- Mensagem será inserida aqui via JavaScript -->
+        </div>
+        <div class="vip-actions" style="margin-top: 20px;">
+          <button class="primary" id="bluestacks-warning-ok">OK</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Ativação de Serviços -->
+    <div class="vip-modal" id="services-activation-modal" hidden>
+      <style>
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        .loading-spinner {
+          animation: spin 1s linear infinite;
+          display: inline-block;
+        }
+      </style>
+      <div class="vip-dialog" style="max-width: 550px; max-height: 85vh; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid rgba(112, 88, 255, 0.2);">
+          <h2 style="margin: 0; color: var(--accent); display: flex; align-items: center; gap: 8px; font-size: 20px;">
+            <span style="font-size: 22px;">🔧</span>
+            <span>Ativar Serviços</span>
+          </h2>
+        </div>
+        
+        <div style="flex: 1; overflow-y: auto; margin-bottom: 16px; padding-right: 6px; max-height: calc(85vh - 180px);">
+          <div id="services-list-container" style="display: grid; gap: 10px;">
+            <!-- Serviços serão inseridos aqui dinamicamente -->
+            <div style="text-align: center; padding: 40px 20px; color: var(--text-secondary);">
+              <div class="loading-spinner" style="font-size: 40px; margin-bottom: 12px;">🔄</div>
+              <p style="margin: 0; font-size: 14px;">Iniciando ativação de serviços...</p>
+            </div>
+          </div>
+        </div>
+        
+        <div style="display: flex; gap: 8px; padding-top: 12px; border-top: 2px solid rgba(112, 88, 255, 0.2);">
+          <button id="services-activation-cancel" class="ghost" style="flex: 1; padding: 10px; font-size: 13px; background: rgba(239, 68, 68, 0.1); border: 2px solid rgba(239, 68, 68, 0.3); color: #ef4444;">
+            <span>❌ Cancelar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Predefinição -->
+    <div class="vip-modal" id="mouse-fix-success-modal" hidden>
+      <div class="vip-dialog" style="max-width: 500px;">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <div style="font-size: 64px; margin-bottom: 16px;">✅</div>
+          <h2 style="margin: 0; color: var(--accent);">Aplicado com sucesso</h2>
+        </div>
+        <div style="margin: 20px 0; padding: 16px; background: rgba(112, 88, 255, 0.1); border: 2px solid rgba(112, 88, 255, 0.3); border-radius: 8px;">
+          <p style="margin: 0; color: var(--text-primary); font-size: 14px; line-height: 1.6; text-align: center;">
+            Para sentir a diferença, é necessário reiniciar o PC.
+          </p>
+        </div>
+        <div class="vip-actions" style="margin-top: 24px; display: flex; gap: 12px;">
+          <button class="primary" id="mouse-fix-restart-btn" style="flex: 1; padding: 14px; font-size: 16px; font-weight: 600; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); border: 2px solid rgba(239, 68, 68, 0.5);">
+            <span style="margin-right: 8px;">🔄</span>
+            <span>Reiniciar PC</span>
+          </button>
+          <button class="ghost" id="mouse-fix-cancel-btn" style="flex: 1; padding: 14px; font-size: 16px; font-weight: 600;">
+            <span>Cancelar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="vip-modal" id="preset-modal" hidden>
+      <div class="vip-dialog" style="max-width: 900px; max-height: 90vh; overflow: hidden; display: flex; flex-direction: column;">
+        <h2>📋 Predefina o que esse botão vai executar</h2>
+        <p style="margin: 12px 0; color: var(--text-secondary);">Selecione as otimizações que deseja incluir na sua predefinição personalizada.</p>
+        
+        <div style="flex: 1; overflow: hidden; display: flex; flex-direction: column; margin-top: 20px;">
+          <div style="display: flex; gap: 16px; flex: 1; overflow: hidden;">
+            <!-- Sidebar de Categorias -->
+            <aside style="min-width: 200px; border-right: 2px solid var(--border-primary); padding-right: 16px; overflow-y: auto;">
+              <div id="preset-categories" style="display: flex; flex-direction: column; gap: 8px;">
+                <!-- Categorias serão preenchidas via JavaScript -->
+              </div>
+            </aside>
+            
+            <!-- Área de Conteúdo -->
+            <div style="flex: 1; overflow-y: auto; padding-left: 16px;">
+              <div id="preset-content" style="display: flex; flex-direction: column; gap: 16px;">
+                <!-- Conteúdo será preenchido via JavaScript -->
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="vip-actions" style="margin-top: 20px; border-top: 1px solid var(--border-primary); padding-top: 16px;">
+          <button class="ghost" id="preset-modal-cancel">Cancelar</button>
+          <button class="primary" id="preset-modal-confirm">Confirmar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="terms-modal" id="terms-modal">
+      <div class="terms-content">
+        <h2>📄 Termos de Uso – Painel Y20 BOOSTER</h2>
+        <p>O Painel Y20 BOOSTER foi desenvolvido com foco em otimização e desempenho, oferecendo funções avançadas para usuários que desejam extrair o máximo do seu sistema. Algumas funcionalidades estão em fase de testes, enquanto outras já foram 100% testadas e aprovadas pela equipe.</p>
+        <h3>⚠️ Aviso de Responsabilidade</h3>
+        <p>Ao utilizar o painel, o usuário assume total responsabilidade por qualquer alteração feita no sistema. Por isso, é extremamente recomendado criar um ponto de restauração antes de aplicar qualquer função, garantindo segurança e possibilidade de reversão em caso de instabilidade.</p>
+        <h3>💬 Suporte e Dúvidas</h3>
+        <p>Em caso de dúvidas, sugestões ou necessidade de ajuda, entre na comunidade oficial no Discord: <a href="https://discord.gg/9zx2GjGmKG" target="_blank" rel="noreferrer">https://discord.gg/9zx2GjGmKG</a></p>
+        <p>Nosso Site: <a href="https://y20.site/" target="_blank" rel="noreferrer">https://y20.site/</a></p>
+        <div class="terms-actions">
+          <button class="ghost" id="terms-decline">Fechar</button>
+          <button class="primary" id="terms-accept">Confirmar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" hidden>
+      <span id="toast-message"></span>
+    </div>
+    <!-- Tela de bloqueio para VIP/Básico offline -->
+    <div id="vip-offline-block" class="vip-offline-block" hidden>
+      <div class="vip-offline-content">
+        <div class="vip-offline-icon">🔌</div>
+        <h1>API está Offline</h1>
+        <p>A API do servidor está temporariamente indisponível.</p>
+        <p class="vip-offline-subtitle">Você pode continuar usando os recursos normais (acesso simples) enquanto aguarda o servidor ficar ativo novamente.</p>
+        <p class="vip-offline-subtitle" style="margin-top: 10px; color: rgba(255, 193, 7, 0.9);"><strong>Se você tem acesso Básico ou VIP, aguarde até que o servidor esteja online para usar recursos premium.</strong></p>
+        <button id="vip-offline-retry" class="vip-offline-button">Verificar Bot/MongoDB</button>
+      </div>
+    </div>
+
+    <div id="offline-overlay" class="offline-overlay" hidden>
+      <div class="offline-card">
+        <div class="offline-content">
+          <div class="offline-icon">🔌</div>
+          <h1>Servidor Offline</h1>
+          <p>O servidor está temporariamente indisponível. Por favor, aguarde alguns instantes e tente novamente.</p>
+          <button id="offline-retry" class="primary">Tentar novamente</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Painel de Logs -->
+    <div class="logs-panel" id="logs-panel" style="display: none;">
+      <div class="logs-panel-header">
+        <h3>📋 Logs do Sistema</h3>
+        <div class="logs-panel-actions">
+          <button class="ghost mini" id="clear-logs">Limpar</button>
+          <button class="ghost mini" id="close-logs-panel">✕</button>
+        </div>
+      </div>
+      <div class="logs-panel-content" id="logs-content">
+        <div class="log-entry">Sistema iniciado...</div>
+      </div>
+    </div>
+
+    <!-- Modal de Atualização Obrigatória -->
+    <!-- Modal para opções de Tweaks/Cursores -->
+    <div class="vip-modal" id="bs-tweaks-presets-modal" hidden style="z-index: 10001;">
+      <div class="vip-dialog" style="max-width: 800px; max-height: 85vh; overflow: hidden; display: flex; flex-direction: column;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h2 style="margin: 0;">⚙️ Opções de Tweaks / Cursores</h2>
+          <button class="ghost mini" id="bs-tweaks-modal-close" style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;">✕</button>
+        </div>
+        <div style="flex: 1; overflow-y: auto; padding-right: 8px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+            <div class="preset-column">
+              <h4 style="margin: 0 0 12px 0; color: var(--text-primary);">Ajustes menores</h4>
+              <p class="preset-hint" style="margin: 0 0 16px 0; font-size: 12px; color: var(--text-secondary);">Alguns ajustes podem não funcionar dependendo do emulador.</p>
+              <div class="preset-buttons">
+                <button data-value="16450" class="preset-option">16450 (Padrão)</button>
+                <button data-value="16402" class="preset-option">16402</button>
+                <button data-value="16458" class="preset-option">16458</button>
+                <button data-value="88066" class="preset-option">88066</button>
+                <button data-value="21074" class="preset-option">21074</button>
+                <button data-value="21010" class="preset-option">21010</button>
+                <button data-value="21058" class="preset-option">21058</button>
+                <button data-value="18514" class="preset-option">18514</button>
+              </div>
+            </div>
+            <div class="preset-column">
+              <h4 style="margin: 0 0 12px 0; color: var(--text-primary);">Ajustes maiores</h4>
+              <p class="preset-hint" style="margin: 0 0 16px 0; font-size: 12px; color: var(--text-secondary);">Necessário testar e verificar a melhor resposta para o seu PC.</p>
+              <div class="preset-buttons">
+                <button data-value="622416450" class="preset-option">622416450</button>
+                <button data-value="1000000010" class="preset-option">1000000010</button>
+                <button data-value="158816450" class="preset-option">158816450</button>
+                <button data-value="838816450" class="preset-option">838816450</button>
+                <button data-value="948816450" class="preset-option">948816450</button>
+                <button data-value="807488066" class="preset-option">807488066</button>
+                <button data-value="807488082" class="preset-option">807488082</button>
+                <button data-value="178016450" class="preset-option">178016450</button>
+                <button data-value="288016450" class="preset-option">288016450</button>
+                <button data-value="858016450" class="preset-option">858016450</button>
+                <button data-value="968016450" class="preset-option">968016450</button>
+                <button data-value="2000000010" class="preset-option">2000000010</button>
+                <button data-value="102421066" class="preset-option">102421066</button>
+                <button data-value="102421058" class="preset-option">102421058</button>
+                <button data-value="800021066" class="preset-option">800021066</button>
+                <button data-value="148816450" class="preset-option">148816450</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para opções de Alterar dispositivo -->
+    <div class="vip-modal" id="bs-device-presets-modal" hidden style="z-index: 10001;">
+      <div class="vip-dialog" style="max-width: 700px; max-height: 85vh; overflow: hidden; display: flex; flex-direction: column;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h2 style="margin: 0;">📱 Dispositivos Pré-configurados</h2>
+          <button class="ghost mini" id="bs-device-modal-close" style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;">✕</button>
+        </div>
+        <p class="preset-hint" style="margin: 0 0 20px 0; font-size: 13px; color: var(--text-secondary);">Selecione um dispositivo pré-configurado (alguns exigem reinstalar o Free Fire para habilitar 120 FPS).</p>
+        <div style="flex: 1; overflow-y: auto; padding-right: 8px;">
+          <div class="preset-table">
+            <button class="preset-device" data-brand="Xiaomi" data-manufacturer="Xiaomi" data-model="M2003J15sg">Redmi Note 9 (M2003J15sg)</button>
+            <button class="preset-device" data-brand="Xiaomi" data-manufacturer="Xiaomi" data-model="m2101k7ag">Redmi Note 10 (m2101k7ag)</button>
+            <button class="preset-device" data-brand="Xiaomi" data-manufacturer="Xiaomi" data-model="24030PN60C">Xiaomi 14 Ultra (24030PN60C)</button>
+            <button class="preset-device" data-brand="Huawei" data-manufacturer="Huawei" data-model="Nova 13 Pro">Huawei Nova 13 Pro</button>
+            <button class="preset-device" data-brand="Xiaomi" data-manufacturer="Xiaomi" data-model="M2004J19C">Redmi 9 (M2004J19C)</button>
+            <button class="preset-device" data-brand="Apple" data-manufacturer="Apple" data-model="apple_A2342">Apple (apple_A2342)</button>
+            <button class="preset-device" data-brand="realme" data-manufacturer="realme" data-model="RMX5070">realme 14 50 (RMX5070)</button>
+            <button class="preset-device" data-brand="asus" data-manufacturer="asus" data-model="ASUS_Z01QD">ASUS_Z01QD</button>
+            <button class="preset-device" data-brand="Samsung" data-manufacturer="Samsung" data-model="SM-S928B">Samsung SM-S928B</button>
+            <button class="preset-device" data-brand="ASUS" data-manufacturer="ASUS" data-model="AI2401_D">ASUS AI2401_D</button>
+            <button class="preset-device" data-brand="asus" data-manufacturer="asus" data-model="ASUS_AI2201">ASUS_AI2201</button>
+            <button class="preset-device" data-brand="OnePlus" data-manufacturer="OnePlus" data-model="ONEPLUS A5000">OnePlus A5000</button>
+            <button class="preset-device" data-brand="Apple" data-manufacturer="Apple" data-model="iphone 14 Pro Max">iPhone 14 Pro Max</button>
+            <button class="preset-device" data-brand="samsung" data-manufacturer="samsung" data-model="SM-M315F">Samsung SM-M315F</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vip-modal" id="update-required-modal" hidden style="z-index: 10000;">
+      <div class="vip-dialog" style="max-width: 600px;">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <div style="font-size: 64px; margin-bottom: 16px;">🔄</div>
+          <h2 style="margin: 0; color: var(--accent);">Atualização Recomendada</h2>
+        </div>
+        <div style="margin: 20px 0; padding: 16px; background: rgba(112, 88, 255, 0.1); border: 2px solid rgba(112, 88, 255, 0.3); border-radius: 8px;">
+          <p style="margin: 0 0 12px 0; color: var(--text-primary); font-weight: 600;">
+            ✨ Uma nova versão do Y20 BOOSTER está disponível! Recomendamos atualizar para ter acesso às melhorias e correções mais recentes.
+          </p>
+          <div style="margin: 12px 0; padding: 12px; background: rgba(0, 0, 0, 0.3); border-radius: 6px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+              <span style="color: var(--text-secondary);">Versão atual:</span>
+              <strong id="update-current-version" style="color: var(--text-primary);">-</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-secondary);">Nova versão:</span>
+              <strong id="update-latest-version" style="color: var(--accent);">-</strong>
+            </div>
+          </div>
+          <div id="update-release-notes" style="margin-top: 12px; padding: 12px; background: rgba(0, 0, 0, 0.2); border-radius: 6px; max-height: 200px; overflow-y: auto;">
+            <p style="margin: 0; color: var(--text-secondary); font-size: 13px; line-height: 1.6; white-space: pre-wrap;" id="update-notes-text">Carregando notas da versão...</p>
+          </div>
+        </div>
+        <p style="margin: 20px 0; color: var(--text-secondary); text-align: center; font-size: 14px; line-height: 1.6;">
+          <strong style="color: #fbbf24;">💡 Recomendação:</strong> Mantenha seu painel sempre atualizado para garantir melhor desempenho, novas funcionalidades e correções de bugs. A atualização é rápida e segura.
+        </p>
+        <div class="vip-actions" style="margin-top: 24px; display: flex; gap: 12px;">
+          <button class="ghost" id="update-modal-close" style="flex: 1; padding: 14px; font-size: 14px; font-weight: 500;">
+            <span>Continuar com versão atual</span>
+          </button>
+          <button class="primary" id="update-download-btn" style="flex: 1; padding: 14px; font-size: 16px; font-weight: 600;">
+            <span style="margin-right: 8px;">⬇️</span>
+            <span>Baixar Atualização</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="renderer.js"></script>
+  </body>
+</html>
+
+
+</html>
+

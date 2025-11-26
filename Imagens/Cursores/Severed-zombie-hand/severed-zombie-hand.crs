@@ -1,0 +1,12 @@
+﻿[SizeAll]
+Path=shmove.ani
+
+[SizeNWSE]
+Path=shnwse.ani
+
+[SizeNESW]
+Path=shswne.ani
+
+[SizeNS]
+Path=shvert.ani
+

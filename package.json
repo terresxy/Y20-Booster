@@ -1,0 +1,84 @@
+{
+  "name": "y20booster-electron",
+  "version": "1.0.85",
+  "description": "Painel de otimização Y20 BOOSTER com Electron e Node.js.",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "npm run start",
+    "clean-release": "node scripts/clean-release.js",
+    "generate-installer-assets": "node scripts/process-banner.js && node scripts/generate-icon.js",
+    "prebuild": "node scripts/clean-release.js",
+    "build": "npm run generate-installer-assets && electron-builder",
+    "postbuild": "node scripts/generate-integrity-postbuild.js && node scripts/fix-latest-yml.js && node scripts/upload-to-github.js",
+    "upload-gitea": "node scripts/upload-to-gitea.js",
+    "upload-github": "node scripts/upload-to-github.js",
+    "upload-latest-yml": "node scripts/upload-latest-yml-to-release.js"
+  },
+  "keywords": [],
+  "author": "Y20 Booster",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/terresxy/Y20-Booster.git"
+  },
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^39.1.2",
+    "electron-builder": "^26.0.12",
+    "jimp": "^1.6.0"
+  },
+  "build": {
+    "appId": "com.y20.booster",
+    "productName": "Y20 BOOSTER",
+    "files": [
+      "src/**",
+      "assets/**",
+      "scripts/**",
+      "package.json",
+      ".env"
+    ],
+    "extraResources": [
+      {
+        "from": "Imagens",
+        "to": "Imagens"
+      }
+    ],
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icons/win/icon.ico",
+      "artifactName": "Y20Booster-${version}-setup.${ext}",
+      "requestedExecutionLevel": "requireAdministrator"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Y20 BOOSTER",
+      "include": "build/installer.nsh",
+      "installerIcon": "assets/icons/win/icon.ico",
+      "uninstallerIcon": "assets/icons/win/icon.ico",
+      "installerHeaderIcon": "assets/icons/win/icon.ico",
+      "menuCategory": "Games",
+      "warningsAsErrors": false
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "terresxy",
+      "repo": "Y20-Booster",
+      "releaseType": "release"
+    }
+  },
+  "dependencies": {
+    "archiver": "^5.3.2",
+    "dotenv": "^16.6.1",
+    "electron-store": "^11.0.2",
+    "electron-updater": "^6.6.2",
+    "systeminformation": "^5.27.11"
+  }
+}
