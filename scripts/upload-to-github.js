@@ -15,7 +15,7 @@ const GITHUB_PRIVATE_REPO = process.env.GITHUB_PRIVATE_REPO || '';
 const GITHUB_PRIVATE_TOKEN = process.env.GITHUB_PRIVATE_TOKEN || GITHUB_TOKEN;
 
 // Versão
-const VERSION = '1.0.84';
+const VERSION = '1.0.85';
 const TAG = `v${VERSION}`;
 const PRIVATE_ARCHIVE_NAME = process.env.GITHUB_PRIVATE_ARCHIVE_NAME || `Y20Booster-${VERSION}-source.zip`;
 const PRIVATE_EXTRA_IGNORE = (process.env.GITHUB_PRIVATE_EXTRA_IGNORE || '')
