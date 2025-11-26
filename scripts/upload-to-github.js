@@ -476,6 +476,15 @@ async function main() {
     const blockmapPath = path.join(process.cwd(), 'release', `Y20Booster-${VERSION}-setup.exe.blockmap`);
     
     if (fs.existsSync(installerPath)) {
+      // Verificar se instalador já existe e deletar antes de enviar o novo
+      const installerFileName = path.basename(installerPath);
+      const existingInstaller = release.assets?.find(asset => asset.name === installerFileName);
+      if (existingInstaller) {
+        log(`⚠️ ${installerFileName} já existe, deletando versão antiga...`, 'yellow');
+        await deleteAsset(publicRepoConfig, existingInstaller.id, 'instalador');
+        // Aguardar um pouco para garantir que a deleção foi processada
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
       await uploadAsset(publicRepoConfig, release.id, installerPath, 'instalador');
     } else {
       log(`\n⚠️  Arquivo instalador não encontrado: ${installerPath}`, 'yellow');
@@ -510,6 +519,17 @@ async function main() {
     
     if (fs.existsSync(blockmapPath)) {
       log(`\n📎 Fazendo upload do blockmap...\n`, 'blue');
+      
+      // Verificar se blockmap já existe e deletar antes de enviar o novo
+      const blockmapFileName = path.basename(blockmapPath);
+      const existingBlockmap = release.assets?.find(asset => asset.name === blockmapFileName);
+      if (existingBlockmap) {
+        log(`⚠️ ${blockmapFileName} já existe, deletando versão antiga...`, 'yellow');
+        await deleteAsset(publicRepoConfig, existingBlockmap.id, 'blockmap');
+        // Aguardar um pouco para garantir que a deleção foi processada
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+      
       await uploadAsset(publicRepoConfig, release.id, blockmapPath, 'blockmap');
     }
 
